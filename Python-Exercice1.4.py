@@ -29,7 +29,9 @@ while True:
 print(personnes)
 
 def save_to_json(data):
-    tk.Tk().withdraw()
+    root = tk.Tk()
+    root.withdraw()
+    root.attributes('-topmost', True)
     folder_path = fd.askdirectory()
     if folder_path:
         filename = fd.asksaveasfilename(initialdir=folder_path, defaultextension=".json", filetypes=[("JSON files", "*.json")])
@@ -37,6 +39,7 @@ def save_to_json(data):
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
             print("Data saved to:", filename)
+    root.attributes('-topmost', False)
 
 save_to_json(personnes)
 
