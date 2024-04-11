@@ -4,8 +4,8 @@ import json
 
 personnes = []
 
-def age_reel ():
-    today = d.today
+def age_reel(personne):
+    today = d.today()
     anniv_input = d.strptime(personne["date d'anniversaire"],"%Y/%m/%d")
     age = today.year - anniv_input.year - ((today.month, today.day))<(anniv_input.month,anniv_input.day)
     return age
