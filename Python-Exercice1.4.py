@@ -26,7 +26,7 @@ while True:
     if choice != "O":
         break
 
-print(personnes)
+#print(personnes) #used for test
 
 def save_to_json(data):
     root = tk.Tk()
