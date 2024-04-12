@@ -22,8 +22,8 @@ while True:
     print(f"Age: {personne['age']}")    
     
     personnes.append(personne)
-    choice = input("Add another person? (y/n) ")
-    if choice != "y":
+    choice = input("voulez vous ajouter une personne? (O/N) ")
+    if choice != "O":
         break
 
 print(personnes)
