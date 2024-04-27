@@ -1,0 +1,45 @@
+Au sein d’une banque, dans le cadre du RGPG vous êtes chargé de mettre en place un système de purge sur les dossiers de demande crédit.
+
+etape 1 creation base de donnee:
+On va avoir 2 tables dans votre bdd,
+une « client » et une autre « dossier ».
+
+Table_Client :
+id_client : auto increment NOT NULL
+Nom_client : texte NOT NULL
+Prénom_client : texte NOT NULL
+Status_contentieux (booleen : vrai ou faux) NOT NULL
+
+table_dossier :
+id_dossier: auto-increment) NOT NULL
+reference client : reference id_client de table_client NOT NULL
+numéro_de_dossier (aleatoire, minimum 6 chiffres) NOT NULL
+type_crédit (personnel, voiture, immobilier) NOT NULL
+montant_credit (entre 1500 et 200000 toujours entier  par increment de 1500) NOT NULL
+durée_crédit (1, 2, 5, 7, 10, 15, 20 ans) NOT NULL
+date_création (format annee-mois-jour plage min : 2000-01-01, max: 2024-04-01) NOT NULL
+date_clôture ( format annee-mois-jour, plage min: 2001-01-01, max 2024-04-28) CAN BE NULL
+statut_rgpd (ouvert si pas de date cloture, archivé si date_clôture  > 10 ans aujourd'hui ) NOT NULL
+
+etape 2: remplir les tables avec le module Faker:
+
+Remplir 100 references aleatoire dans Table_Client, laisser distribuer 50% de Status_contentieux entre vrai et faux.
+Remplir 100 reference dans table_dossier, respecter durée_crédit et les plages min-max fournies par objet, date_clôture laisser 50% des dates sans valeure , laisser le statut_rgpd vide.
+
+
+etape 3: definir le statut_rgpd
+
+variable "archive" avec les cas suivants
+dans table_dossier la date_cloture est superieure stricte de 5 ans a la date_création ET le Status_contentieux = faux
+dans table_dossier la date_cloture est superieure stricte de 10 ans  a la date_création ET le Status_contentieux = vrai
+
+Variable possible "supression_rgpd" avec les cas suivants
+dans table_dossier la date_cloture est superieure stricte de 10 ans a la date_création ET le Status_contentieux = faux
+dans table_dossier la date_cloture est superieure stricte de 15 ans  a la date_création ET le Status_contentieux = vrai
+
+Variable "ouvert" avec le cas suivant
+il n'y a pas de date_clôture
+
+Creer un LOG des statut archivé et supression_rgpd en effectuant le traitement suivant:
+1- creer un fichier archive_'annee'.JSON qui regroupe toute les operation "archive"
+2- creer un fichier supression_rgpd_'annee'.JSON qui regroupe toute les operation "supression_rgpd"
