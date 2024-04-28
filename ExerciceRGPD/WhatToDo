@@ -1,6 +1,6 @@
-Au sein d’une banque, dans le cadre du RGPG vous êtes chargé de mettre en place un système de purge sur les dossiers de demande crédit.
+Au sein d’une banque, dans le cadre du RGPG vous êtes chargé de mettre en place un système de purge sur les dossiers de demande crédit ecrit en langage python
 
-etape 1 creation base de donnee:
+etape 1 creation base de donnee SQLITE3 locale (meme dossier que le script python pour la simplicite)
 On va avoir 2 tables dans votre bdd,
 une « client » et une autre « dossier ».
 
