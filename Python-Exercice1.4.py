@@ -1,56 +1,30 @@
-import os
-import datetime as dt
-from datetime import datetime as d
-import tkinter as tk
-from tkinter import filedialog as fd
 import json
+import tkinter as tk
+from datetime import datetime as dt
+from tkinter import filedialog as fd
 
-def Filecheck ():
-    if os.path.isfile('*.json'):
-        with open('*.json', 'r+', encoding='utf-8') as f:
-          data = json.load(f)[0]
-    else:
-        root = tk.Tk()
-        root.withdraw()
-        root.attributes('-topmost', True)
-        file_path = fd.askopenfilename()
+
+def load_data_from_file():
+    file_path = fd.askopenfilename(filetypes=[("JSON files", "*.json")])
     if file_path:
-        with open(file_path,'r+', encoding='utf-8') as f:
-            data = json.load(f)[0]
-        root.attributes('-topmost', False)
-    print(data)
-    return data
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
 
-def age_reel(personne):
-    today = d.today()
-    anniv_input = d.strptime(personne["date d'anniversaire"],"%Y/%m/%d")
-    age = today.year - anniv_input.year - ((today.month, today.day) < (anniv_input.month, anniv_input.day))
+
+def get_age_from_birthday(birthday):
+    today = dt.today()
+    birthday_date = dt.strptime(birthday, "%Y/%m/%d")
+    age = today.year - birthday_date.year - ((today.month, today.day) < (birthday_date.month, birthday_date.day))
     return age
 
-def onstart():
-    new_or_load = input("Nouveau fichier ou Charger ? N/C ")
-    if new_or_load == "C":
-        Filecheck()
 
-data = onstart()
+def get_person_data():
+    personne = {"nom": input("Nom: "), "prenom": input("Prénom: "),
+                "date d'anniversaire": input("Date d'anniversaire au format AAAA/MM/JJ: "), "ville": input("Ville: ")}
+    personne["age"] = get_age_from_birthday(personne["date d'anniversaire"])
+    print(f"Age: {personne['age']}")
+    return personne
 
-personnes = []
-
-if data:
-    personnes.extend(data)
-
-while True:
-    personne = {}
-    personne["nom"] = input("Nom: ")
-    personne["prenom"] = input("Prénom: ")
-    personne["date d'anniversaire"] = input("date d'anniversaire au format AAAA/MM/JJ: ")
-    personne["ville"] = input("Ville: ")
-    personne["age"] = age_reel(personne)
-    print(f"Age: {personne['age']}")    
-    personnes.append(personne)
-    choice = input("voulez vous ajouter une personne? (O/N) ")
-    if choice != "O":
-        break
 
 def save_to_json(data):
     root = tk.Tk()
@@ -58,12 +32,30 @@ def save_to_json(data):
     root.attributes('-topmost', True)
     folder_path = fd.askdirectory()
     if folder_path:
-        filename = fd.asksaveasfilename(initialdir=folder_path, defaultextension=".json", filetypes=[("JSON files", "*.json")])
+        filename = fd.asksaveasfilename(initialdir=folder_path, defaultextension=".json",
+                                        filetypes=[("JSON files", "*.json")])
         if filename:
-            mode = 'a' if os.path.isfile(filename) else 'w'
-            with open(filename, mode, encoding ='utf-8') as f:
+            with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=4)
-            print("fichier sauvé comme:", filename)
-    root.attributes('-topmost', False)
+            print("Fichier sauvegardé comme:", filename)
 
-save_to_json(personnes)
+
+def main():
+    new_or_load = input("Nouveau fichier ou Charger ? N/C ")
+    if new_or_load == "C":
+        data = load_data_from_file()
+    else:
+        data = []
+
+    while True:
+        personne = get_person_data()
+        data.append(personne)
+        choice = input("Voulez-vous ajouter une autre personne? (O/N) ")
+        if choice.upper() != "O":
+            break
+
+    save_to_json(data)
+
+
+if __name__ == "__main__":
+    main()

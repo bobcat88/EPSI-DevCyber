@@ -30,12 +30,12 @@ Remplir 100 reference dans table_dossier, respecter durée_crédit et les plages
 etape 3: definir le statut_rgpd
 
 variable "archive" avec les cas suivants
-dans table_dossier la date_cloture est superieure stricte de 5 ans a la date_création ET le Status_contentieux = faux
-dans table_dossier la date_cloture est superieure stricte de 10 ans  a la date_création ET le Status_contentieux = vrai
+dans table_dossier la date_cloture est superieure stricte de 5 ans a la date_creation ET le Status_contentieux = faux
+dans table_dossier la date_cloture est superieure stricte de 10 ans  a la date_creation ET le Status_contentieux = vrai
 
 Variable possible "supression_rgpd" avec les cas suivants
-dans table_dossier la date_cloture est superieure stricte de 10 ans a la date_création ET le Status_contentieux = faux
-dans table_dossier la date_cloture est superieure stricte de 15 ans  a la date_création ET le Status_contentieux = vrai
+dans table_dossier la date_cloture est superieure stricte de 10 ans a la date_creation ET le status_contentieux = faux
+dans table_dossier la date_cloture est superieure stricte de 15 ans  a la date_creation ET le status_contentieux = vrai
 
 Variable "ouvert" avec le cas suivant
 il n'y a pas de date_clôture
